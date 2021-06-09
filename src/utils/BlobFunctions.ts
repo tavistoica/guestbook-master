@@ -44,7 +44,23 @@ export const getTableContent = () => {
         function (error, result: any, response) {
           if (!error) {
             if (result.entries[0] !== undefined) {
-              resolve(result.entries);
+              console.log(
+                "result.entries",
+                new Date(result.entries[0].Timestamp._).getTime()
+              );
+              const sorted = result.entries.sort((a: any, b: any) => {
+                console.log(
+                  new Date(b.Timestamp._).getTime(),
+                  new Date(a.Timestamp._).getTime()
+                );
+
+                return (
+                  new Date(b.Timestamp._).getTime() -
+                  new Date(a.Timestamp._).getTime()
+                );
+              });
+              console.log("final,", sorted);
+              resolve(sorted);
             } else {
               reject("code not found");
             }

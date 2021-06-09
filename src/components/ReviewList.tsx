@@ -64,21 +64,24 @@ export const ReviewList: React.FC<ReviewListProps> = ({
         </Text>
       ) : (
         <SimpleGrid columns={{ base: 1, md: 2 }} spacing={5}>
-          {pictures.map((item, index) => {
-            const processedUrl = item.split("/");
-            const id = processedUrl[processedUrl.length - 1];
-            const nameAndMessage = details.filter(
-              (i) => i.PartitionKey._ === id
-            );
-            const timeSplitted = nameAndMessage[0].RowKey._.split(" ");
-            const time = `${timeSplitted[1]} ${timeSplitted[2]}`;
+          {details.map((item, index) => {
+            // const processedUrl = item.split("/");
+            // const id = processedUrl[processedUrl.length - 1];
+            const picture = pictures.filter((i) => {
+              const picture = i.split("/");
+              const id = picture[picture.length - 1];
 
+              return item.PartitionKey._ === id;
+            });
+
+            const timeSplitted = item.RowKey._.split(" ");
+            const time = `${timeSplitted[1]} ${timeSplitted[2]}`;
             return (
               <Box key={index}>
                 <ReviewCard
-                  name={nameAndMessage[0].name._}
-                  message={nameAndMessage[0].message._}
-                  imageURL={item}
+                  name={item.name._}
+                  message={item.message._}
+                  imageURL={picture[0]}
                   time={time}
                 />
               </Box>
